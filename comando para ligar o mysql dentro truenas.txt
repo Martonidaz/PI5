@@ -1,0 +1,2 @@
+docker exec -it mysql_sensor mysql -uroot -p
+

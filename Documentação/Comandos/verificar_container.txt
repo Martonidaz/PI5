@@ -1,0 +1,11 @@
+docker ps -a
+
+Procure pelo seu contâIner e veja a coluna "STATUS". Exemplos:
+
+    Exited (1) → houve erro na inicialização
+
+    Exited (0) → parou normalmente
+    
+    Exited (255) → erro de configuração
+
+    Up → está rodando (não é seu caso)

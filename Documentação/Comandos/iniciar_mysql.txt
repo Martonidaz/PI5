@@ -1,0 +1,5 @@
+docker start mysql_sensor
+
+docker - comando para executar o programa docker
+start - comando para iniciar contãiners
+mysql_sensor - nome do contâiner

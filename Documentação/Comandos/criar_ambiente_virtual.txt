@@ -1,0 +1,39 @@
+* Criando um ambiente virtual
+
+1. Instale o módulo venv (se ainda não tiver):
+
+sudo apt-get install python3-venv
+
+2. Navegue até a pasta do seu projeto:
+
+cd ~/Documentos/GitHub/Projeto/Aplicação
+
+3. Crie o ambiente virtual:
+
+python3 -m venv venv
+
+* Ativando o ambiente virtual
+
+No Linux/MacOS:
+source venv/bin/activate
+
+No Windows (PowerShell):
+powershell
+
+.\venv\Scripts\activate
+
+Depois de ativar, você verá o nome do ambiente virtual no seu prompt de comando, algo como (venv) usuario@ubuntu-Lenovo.
+
+* Instalando pacotes no ambiente virtual
+
+Com o ambiente ativado, instale as dependências:
+
+Ex:
+pip install mysql-connector-python
+
+* Desativando o ambiente virtual
+
+Quando terminar de trabalhar no projeto, você pode desativar o ambiente com:
+
+deactivate
+

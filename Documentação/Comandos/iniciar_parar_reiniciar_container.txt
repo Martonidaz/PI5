@@ -1,0 +1,6 @@
+Iniciar container: docker start nome_do_container
+
+Parar container: docker stop nome_do_container
+
+Reiniciar container: docker restart nome_do_container
+

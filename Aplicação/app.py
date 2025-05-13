@@ -50,7 +50,7 @@ def get_dados():
 @app.route("/")
 def dashboard():
     dados, detectado, sem = get_dados()
-    return render_template("dashboard5.html", dados=dados, detectado=detectado, sem=sem)
+    return render_template("dashboard.html", dados=dados, detectado=detectado, sem=sem)
 
 @app.route("/exportar")
 def exportar_csv():

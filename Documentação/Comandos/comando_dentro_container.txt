@@ -1,0 +1,13 @@
+# Para executar os comando que o container executa normalmente
+Ex: 
+* tailscale up
+* show databases;
+
+# Comando docker para isso
+
+docker exec <nome_do_container> <comando_a_ser_executado>
+
+Ex:
+* docker exec tailscale tailscale up
+* docker exec myql show databases;
+

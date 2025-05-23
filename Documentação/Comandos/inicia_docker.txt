@@ -1,0 +1,4 @@
+systemctl start docker
+
+* Verifica se está ativo
+systemctl status docker

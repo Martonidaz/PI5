@@ -1,0 +1,20 @@
+docker run -d \
+  --name=tailscale \
+  --cap-add=NET_ADMIN \
+  --cap-add=SYS_MODULE \
+  --device=/dev/net/tun \
+  --network=host \
+  -v /var/lib/tailscale:/var/lib/tailscale \
+  tailscale/tailscale \
+  tailscaled
+
+
+* Autenticar Tailscale
+
+docker exec -it tailscale tailscale up
+
+Após o comando acima siga o endereõ de link para fazer login
+To authenticate, visit:
+https://login.tailscale.com/...
+
+

@@ -12,7 +12,7 @@ void loop() {
   Serial.println(ldrValor);       // Mostra o valor no monitor serial
 
   // Se a luminosidade for baixa (valor alto do LDR), acende o LED
-  if (ldrValor < 500) {
+  if (ldrValor < 300) {
     digitalWrite(ledPin, HIGH);   // Acende o LED
   } else {
     digitalWrite(ledPin, LOW);    // Apaga o LED

@@ -39,12 +39,12 @@ void loop() {
   //Se não, os LEDs apagam 
   if (ldrValue3 < 500) { 
     // Pouca luz: acende os LEDs
-    digitalWrite(ledPin1, HIGH);
-    digitalWrite(ledPin2, HIGH);
+    digitalWrite(ledPin5, HIGH);
+    digitalWrite(ledPin6, HIGH);
   } else {
     // Muita luz: apaga os LEDs
-    digitalWrite(ledPin1, LOW);
-    digitalWrite(ledPin2, LOW);
+    digitalWrite(ledPin5, LOW);
+    digitalWrite(ledPin6, LOW);
   }
 
   if (ldrValue2 < 500) {
@@ -59,12 +59,12 @@ void loop() {
 
   if (ldrValue1 < 500) {
     // Pouca luz: acende os LEDs
-    digitalWrite(ledPin5, HIGH);
-    digitalWrite(ledPin6, HIGH);
+    digitalWrite(ledPin1, HIGH);
+    digitalWrite(ledPin2, HIGH);
   } else {
     // Muita luz: apaga os LEDs
-    digitalWrite(ledPin5, LOW);
-    digitalWrite(ledPin6, LOW);
+    digitalWrite(ledPin1, LOW);
+    digitalWrite(ledPin2, LOW);
   }
 
   delay(500); // Aguarda meio segundo

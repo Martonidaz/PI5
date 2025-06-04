@@ -22,7 +22,7 @@ DB_CONFIG = {
     'database': 'sensores'
 }
 
-SERIAL_PORT = '/dev/ttyACM1' #Altere de acordo com sua entrada USB
+SERIAL_PORT = 'COM9' #Altere de acordo com sua entrada USB
 BAUD_RATE = 9600
 
 # Variável global para os dados

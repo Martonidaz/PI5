@@ -1,0 +1,7 @@
+################## NO TERMINAL ###################
+
+//Caso precise ativar o ambiente
+source venv/bin/activate
+
+//Executar o código
+python app.py

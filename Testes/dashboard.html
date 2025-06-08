@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PerlHed CloudDrive</title>
+    <style>
+        /* Reset e Estilos Globais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header com navegação */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4a5568;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #764ba2, #667eea);
+            transform: scale(1.05);
+        }
+
+        /* Páginas */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Home Page - Logo */
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 500px;
+            position: relative;
+        }
+
+        .main-logo {
+            max-width: 80%;
+            max-height: 700px;
+            width: auto;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .main-logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Tabela - Página Postes */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-on {
+            background-color: #48bb78;
+            animation: pulse 2s infinite;
+        }
+
+        .status-off {
+            background-color: #f56565;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(72, 187, 120, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(72, 187, 120, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(72, 187, 120, 0); }
+        }
+
+        /* Página Portaria */
+        .access-log {
+            display: grid;
+            gap: 20px;
+        }
+
+        .access-entry {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .access-entry:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .person-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .person-info h3 {
+            color: #4a5568;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .person-info p {
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .entry-time {
+            background: #48bb78;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        /* Página Escritório */
+        .office-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .sensor-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .sensor-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .sensor-card.movement {
+            border-left: 5px solid #48bb78;
+        }
+
+        .sensor-card.no-movement {
+            border-left: 5px solid #f56565;
+        }
+
+        .sensor-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .movement .sensor-icon {
+            color: #48bb78;
+            animation: bounce 2s infinite;
+        }
+
+        .no-movement .sensor-icon {
+            color: #f56565;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .sensor-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #4a5568;
+        }
+
+        .sensor-status {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .movement .sensor-status {
+            color: #48bb78;
+        }
+
+        .no-movement .sensor-status {
+            color: #f56565;
+        }
+
+        .last-update {
+            margin-top: 15px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-btn {
+                width: 200px;
+            }
+
+            .access-entry {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .office-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header com navegação -->
+        <div class="header">
+            <div class="logo">🏢 PerlHed CloudDrive</div>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showPage('home')">Home</button>
+                <button class="nav-btn" onclick="showPage('postes')">Postes</button>
+                <button class="nav-btn" onclick="showPage('portaria')">Portaria</button>
+                <button class="nav-btn" onclick="showPage('escritorio')">Escritório</button>
+            </div>
+        </div>
+
+        <!-- Página Home -->
+        <div id="home" class="page active">
+            <div class="content-card">
+                <div class="home-content">
+                    <div class="logo-container">
+                        <img src="logo1.jpg" alt="Logo da Empresa" class="main-logo">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página Postes -->
+        <div id="postes" class="page">
+            <div class="content-card">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #4a5568;">📊 Controle de Iluminação dos Postes</h2>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Poste ID</th>
+                                <th>Data/Hora</th>
+                                <th>Status LED</th>
+                                <th>Nível LDR</th>
+                                <th>Localização</th>
+                            </tr>
+                        </thead>
+                        <tbody id="postesTable">
+                            <tr>
+                                <td>P001</td>
+                                <td>02/06/2025 18:45:23</td>
+                                <td><span class="status-indicator status-on"></span>Aceso</td>
+                                <td>15%</td>
+                                <td>Entrada Principal</td>
+                            </tr>
+                            <tr>
+                                <td>P002</td>
+                                <td>02/06/2025 18:44:15</td>
+                                <td><span class="status-indicator status-on"></span>Aceso</td>
+                                <td>12%</td>
+                                <td>Estacionamento</td>
+                            </tr>
+                            <tr>
+                                <td>P003</td>
+                                <td>02/06/2025 18:43:08</td>
+                                <td><span class="status-indicator status-on"></span>Aceso</td>
+                                <td>18%</td>
+                                <td>Jardim Lateral</td>
+                            </tr>
+                            <tr>
+                                <td>P004</td>
+                                <td>02/06/2025 08:15:30</td>
+                                <td><span class="status-indicator status-off"></span>Apagado</td>
+                                <td>85%</td>
+                                <td>Área de Lazer</td>
+                            </tr>
+                            <tr>
+                                <td>P005</td>
+                                <td>02/06/2025 18:46:42</td>
+                                <td><span class="status-indicator status-on"></span>Aceso</td>
+                                <td>10%</td>
+                                <td>Saída de Emergência</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página Portaria -->
+        <div id="portaria" class="page">
+            <div class="content-card">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #4a5568;">🚪 Controle de Acesso - Portaria</h2>
+                
+                <div class="access-log">
+                    <div class="access-entry">
+                        <div class="person-photo">B</div>
+                        <div class="person-info">
+                            <h3>Breno Andrade</h3>
+                            <p><strong>Função:</strong> Desenvolvedor Senior</p>
+                            <p><strong>Departamento:</strong> Tecnologia</p>
+                            <p><strong>ID:</strong> #1001</p>
+                            <span class="entry-time">Entrada: 08:15 - 02/06/2025</span>
+                        </div>
+                    </div>
+
+                    <div class="access-entry">
+                        <div class="person-photo">D</div>
+                        <div class="person-info">
+                            <h3>Daniel Marton</h3>
+                            <p><strong>Função:</strong> Gerente de Projetos</p>
+                            <p><strong>Departamento:</strong> TI/Administrativo</p>
+                            <p><strong>ID:</strong> #1002</p>
+                            <span class="entry-time">Entrada: 08:30 - 02/06/2025</span>
+                        </div>
+                    </div>
+
+                    <div class="access-entry">
+                        <div class="person-photo">JV</div>
+                        <div class="person-info">
+                            <h3>João Vitor Ferreira</h3>
+                            <p><strong>Função:</strong> Analista de Sistemas Senior</p>
+                            <p><strong>Departamento:</strong> TI</p>
+                            <p><strong>ID:</strong> #1003</p>
+                            <span class="entry-time">Entrada: 09:00 - 02/06/2025</span>
+                        </div>
+                    </div>
+
+                    <div class="access-entry">
+                        <div class="person-photo">M</div>
+                        <div class="person-info">
+                            <h3>Mariana Freitas</h3>
+                            <p><strong>Função:</strong> Designer Web</p>
+                            <p><strong>Departamento:</strong> Criativo</p>
+                            <p><strong>ID:</strong> #1004</p>
+                            <span class="entry-time">Entrada: 08:45 - 02/06/2025</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página Escritório -->
+        <div id="escritorio" class="page">
+            <div class="content-card">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #4a5568;">🏢 Monitoramento do Escritório/Servidor</h2>
+                
+                <div class="office-grid">
+                    <div class="sensor-card movement">
+                        <div class="sensor-icon">💻</div>
+                        <h3 class="sensor-title">Servidor</h3>
+                        <p class="sensor-status">Movimento Detectado</p>
+                        <p class="last-update">Última atualização: 19:35</p>
+                        <p style="margin-top: 10px; color: #666;">Pessoas presentes: 3</p>
+                    </div>
+
+                    <div class="sensor-card no-movement">
+                        <div class="sensor-icon">💻</div>
+                        <h3 class="sensor-title">Servidor</h3>
+                        <p class="sensor-status">Movimento Não Detectado</p>
+                        <p class="last-update">Última atualização: 19:35</p>
+                        <p style="margin-top: 10px; color: #666;">Última detecção: 18:45</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para alternar entre páginas
+        function showPage(pageId) {
+            // Esconder todas as páginas
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Mostrar a página selecionada
+            document.getElementById(pageId).classList.add('active');
+            
+            // Atualizar botões de navegação
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Simular atualizações em tempo real
+        function updateTimestamps() {
+            const now = new Date();
+            const timeString = now.toLocaleString('pt-BR');
+            
+            // Atualizar horários na página de escritório
+            const lastUpdates = document.querySelectorAll('.last-update');
+            lastUpdates.forEach(element => {
+                if (element.textContent.includes('Última atualização')) {
+                    element.textContent = `Última atualização: ${now.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}`;
+                }
+            });
+        }
+
+        // Atualizar timestamps a cada 30 segundos
+        setInterval(updateTimestamps, 30000);
+
+        // Simular mudanças de status dos postes
+        function simulatePostUpdates() {
+            const table = document.getElementById('postesTable');
+            const rows = table.querySelectorAll('tr');
+            
+            // Ocasionalmente mudar o status de um poste aleatório
+            if (Math.random() > 0.8) {
+                const randomRow = rows[Math.floor(Math.random() * rows.length)];
+                const statusCell = randomRow.cells[2];
+                const ldrCell = randomRow.cells[3];
+                const timeCell = randomRow.cells[1];
+                
+                const isCurrentlyOn = statusCell.innerHTML.includes('status-on');
+                const newLdrValue = isCurrentlyOn ? Math.floor(Math.random() * 30) + 70 : Math.floor(Math.random() * 20) + 5;
+                
+                timeCell.textContent = new Date().toLocaleString('pt-BR');
+                ldrCell.textContent = newLdrValue + '%';
+                
+                if (isCurrentlyOn && newLdrValue > 60) {
+                    statusCell.innerHTML = '<span class="status-indicator status-off"></span>Apagado';
+                } else if (!isCurrentlyOn && newLdrValue < 30) {
+                    statusCell.innerHTML = '<span class="status-indicator status-on"></span>Aceso';
+                }
+            }
+        }
+
+        // Função para carregar logo
+        function loadLogo() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const mainLogo = document.querySelector('.main-logo');
+                        mainLogo.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+
+        // Iniciar simulações
+        document.addEventListener('DOMContentLoaded', function() {
+            // Atualizar timestamps imediatamente
+            updateTimestamps();
+            
+            // Iniciar simulação de atualização dos postes
+            setInterval(simulatePostUpdates, 5000);
+            
+            // Adicionar evento de clique na logo para trocar imagem
+            const logo = document.querySelector('.main-logo');
+            logo.addEventListener('click', loadLogo);
+        });
+    </script>
+</body>
+</html>
